@@ -9,17 +9,16 @@
 (defn evaluate-guess
   "Mark each char as either contained, contained and in the correct place or uncontained"
   [chosen-word guess]
-  (println (reduce str
-                   (map
-                    (fn [guess-char, chosen-word-char]
-                      (if (= guess-char chosen-word-char)
-                        (str "\u001B[32m" guess-char "\u001B[0m")
-                        (if (not (nil? (str/index-of chosen-word guess-char)))
-                          (str "\u001B[33m" guess-char "\u001B[0m")
-                          (str guess-char))))
-                    (seq guess)
-                    (seq chosen-word))))
-  (= guess chosen-word))
+  [(= guess chosen-word) (reduce str
+                                 (map
+                                  (fn [guess-char, chosen-word-char]
+                                    (if (= guess-char chosen-word-char)
+                                      (str "\u001B[32m" guess-char "\u001B[0m")
+                                      (if (not (nil? (str/index-of chosen-word guess-char)))
+                                        (str "\u001B[33m" guess-char "\u001B[0m")
+                                        (str guess-char))))
+                                  (seq guess)
+                                  (seq chosen-word)))])
 
 (defn valid?
   "Check that the guess is made out of valid chars and is exactly five characters long"
@@ -35,7 +34,9 @@
   (flush)
   (let [guess (read-line)]
     (if (valid? guess)
-      (evaluate-guess chosen-word guess)
+      (let [[won colored-guess] (evaluate-guess chosen-word guess)]
+        (println colored-guess)
+        (boolean won))
       (start-round chosen-word))))
 
 (defn print-color
