@@ -11,24 +11,25 @@
 (defn evaluate-guess
   "Mark each char as either contained, contained and in the correct place or uncontained"
   [chosen-word guess]
-  ; Evaluate this guess char by char
-  ; If the word is contained, we have a problem
-  ; This reduce is redundant, make it necessary
   (println (reduce str
                    (map
-                    (fn [guess, chosen-word]
-                      (if (= guess chosen-word) (str "\u001B[32m" guess "\u001B[0m") (str guess))) (seq guess) (seq chosen-word))))
+                    (fn [guess-char, chosen-word-char]
+                      (if (= guess-char chosen-word-char)
+                        (str "\u001B[32m" guess-char "\u001B[0m")
+                        (if (not (nil? (str/index-of chosen-word guess-char)))
+                          (str "\u001B[33m" guess-char "\u001B[0m")
+                          (str guess-char))))
+                    (seq guess)
+                    (seq chosen-word))))
   (= guess chosen-word))
-
-
 
 (defn valid?
   "Check that the guess is made out of valid chars and is exactly five characters long"
   [guess]
-  ;; (when (not (and (= (count guess) 5) (every? #(Character/isLetter %) guess))) (throw (ex-info "Invalid guess. Make sure that your guess consists of exactly five characters and only letters." {:guess guess}))))
-  (and (= (count guess) 5) (every? #(Character/isLetter %) guess)))
+  (and
+   (= (count guess) 5)
+   (every? #(Character/isLetter %) guess)))
 
-; Do this recusively until a valid guess was made
 (defn start-round
   "Take one guess and evaluate it's correctness"
   [chosen-word]
@@ -37,10 +38,7 @@
   (let [guess (read-line)]
     (if (valid? guess)
       (evaluate-guess chosen-word guess)
-      (start-round chosen-word)))
-    ;; (evaluate-guess chosen-word guess)
-    ;; (catch Exception e ((println (str "Error: " (.getMessage e) " Please try again using a valid word.")) (start-round chosen-word)))))
-  )
+      (start-round chosen-word))))
 
 (defn print-color
   "Print the following text in the specified color"
@@ -57,7 +55,9 @@
       (when (< x 6)
         ;; (println (start-round chosen-word))
         ;; (recur (inc x))))))
-        (if (= (start-round chosen-word) false) (recur (+ x 1)) (println "You gessed the word!"))))))
+        (if (= (start-round chosen-word) false)
+          (recur (+ x 1))
+          (println "You gessed the word!"))))))
 
 ; TODO: Do we really need to accept a list of arguments or are 2 sufficient?
 ; TODO: Implement wordle solver as well
@@ -78,6 +78,7 @@
 ; 5. After 5-6 guesses, terminate
 ; 6. Allow to restart
 ; Store played game / stats to file
+; Implement wordle solver as well
 
 ; For each character, check
 ; Check if word is correct
