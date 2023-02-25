@@ -38,15 +38,21 @@
 
 (defn start-round
   "Take one guess and evaluate it's correctness"
-  [target]
-  (print "Please enter a word: ")
-  (flush)
-  (let [guess (read-line)]
-    (if (valid? guess)
-      (evaluate-guess guess target)
-      ; Think about still using an exception here
-      (do (println "Invalid word, please try again. The word should have consist out of 5 letters.")
-          (start-round target)))))
+  [target, past-guesses, round, won]
+  (if (and (< round 6) (not won))
+    (do
+      (print "Please enter a word: ")
+      (flush)
+      (let [guess (read-line)]
+        (if (valid? guess)
+          (let [[won colorized-guess] (evaluate-guess guess target)]
+            (println colorized-guess)
+            (start-round target (conj past-guesses colorized-guess) (inc round) won))
+          (do (println "Invalid word, please try again. The word should have consist out of 5 letters.")
+              (start-round target past-guesses round won)))))
+    (if (boolean won)
+      (println "Congratulations! You guessed the word!")
+      (println "Game over! You were not able to guess the word 'INSERT WORD HERE'"))))
 
 (defn get-random-word
   "Get a random word from the wordlist"
@@ -60,12 +66,7 @@
         target (get-random-word word-list)]
     ; Remove the target word later
     (println target)
-    ; Do this recursively so we can send the states in between the invocations. Print summary here but the current state in the round function
-    (loop [x 0]
-      (when (< x 6)
-        (let [[won colorized-guess] (start-round target)]
-          (println colorized-guess)
-          (if (not (boolean won)) (recur (inc x)) (println "You guessed the word!")))))))
+    (start-round target [] 0 false)))
 
 (defn -main
   "I don't do a whole lot."
