@@ -17,6 +17,31 @@
         (Integer/parseInt columns)
         (catch NumberFormatException _ nil)) nil)))
 
+(defn repeat-str
+  "Create a string that repeats s n times."
+  [s n]
+  (apply str (repeat n s)))
+
+(defn spaces
+  "Create a string of n spaces."
+  [n]
+  (repeat-str \space n))
+
+(defn center
+  "Center s in padding to final size len"
+  [s len]
+  (let [slen (count s)
+        lpad (int (/ (- len slen) 2))
+        rpad (- len slen lpad)]
+    (str (spaces lpad) s (spaces rpad))))
+
+(defn print-centered
+  "Print string to the center of the terminal"
+  [string]
+  (let [columns (get-term-columns)]
+    (println (center string columns))))
+
+
 (defn get-word-list-from-file
   "Reads the wordlist from the file"
   [path]
@@ -60,6 +85,7 @@
   ; dorun -> returns nil (enough for us), doall -> returns the collection
   (dorun (map #(println (format "%s [%d/6]" %1 %2)) past-guesses (iterate inc 1))))
 
+; Pass keyboard dict as well
 (defn start-round
   "Take one guess and evaluate it's correctness"
   [target, past-guesses, round, won]
@@ -92,6 +118,7 @@
     ; Remove the target word later
     ;; (println target)
     (println (dec (inc (get-term-columns))))
+    (print-centered "Test")
     (start-round target [] 0 false)))
 
 (defn -main

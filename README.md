@@ -8,6 +8,7 @@ A Clojure library designed to ... well, that part is up to you.
 - [ ] Try using a macro of some sort (e.g. for reading in the wordlist at compile-time)
 - [ ] Store statistics in file and update/display them after the game is over
 - [ ] Think about implementing a worlde solver as well
+- [ ] Add demo like already done in lurk
 
 ## Usage
 
