@@ -1,11 +1,14 @@
 (ns clodl.core
   (:require [clojure.string :as str]))
 
-; Print current round [1/6]
 ; Print words in caps
 ; Make sure that only words in the wordlist are accepted. This makes the game significantly harder. Do this as a flag
 ; Don't print the char as yellow if the char is already green. Also, if there is a double-letter in your guess,
 ; if it's actually contained once, just highlight it once.
+
+(def keyboard-keys [{:q nil :w nil :e nil :r nil :t nil :y nil :u nil :i nil :o nil :p nil}
+                    {:a nil :s nil :d nil :f nil :g nil :h nil :j nil :k nil :l nil}
+                    {:z nil :x nil :c nil :v nil :b nil :n nil :m nil}])
 
 ; Try to clarify the error handling here
 (defn get-term-columns
@@ -41,6 +44,12 @@
   (let [columns (get-term-columns)]
     (println (center string columns))))
 
+(defn print-keyboard
+  "Print a keyboard representing the already used characters"
+  [keyboard-keys]
+  (do (println "Test")
+      (for [[[k v] & _] [{:a 1} {:b 2}]]
+        (println "Found key" k "with value" v))))
 
 (defn get-word-list-from-file
   "Reads the wordlist from the file"
@@ -80,9 +89,11 @@
 (defn print-past-guesses
   "Prints all the past guesses in order to be able to be able to infer the target word"
   [past-guesses]
-  ; Normally, transform functions return a lazy sequencek which can't produce side-effects.
+  ; Normally, transform functions return a lazy sequence which can't produce side-effects.
   ; If the purpose of the function is to have side-effects, we need to eagerly evaluate the transformation.
   ; dorun -> returns nil (enough for us), doall -> returns the collection
+
+  ; Use map-indexed here
   (dorun (map #(println (format "%s [%d/6]" %1 %2)) past-guesses (iterate inc 1))))
 
 ; Pass keyboard dict as well
@@ -93,6 +104,7 @@
     (do
       (when (not (= 0 (count past-guesses)))
         (print-past-guesses past-guesses))
+      (print-keyboard keyboard-keys)
       (print "Please enter a word: ")
       (flush)
       (let [guess (clojure.string/lower-case (read-line))]
@@ -119,6 +131,9 @@
     ;; (println target)
     (println (dec (inc (get-term-columns))))
     (print-centered "Test")
+    ; This snippet needs to work
+    (for [[[k v] & _] [{:a 1} {:b 2}]]
+      (println "Found key" k "with value" v))
     (start-round target [] 0 false)))
 
 (defn -main
