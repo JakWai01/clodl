@@ -57,14 +57,15 @@
   [(= guess target)
    (reduce str (get-letter-matches guess target))])
 
-; Work on this next -> Show proper coloring (Also mark used but uncontained chars)
 (defn create-guess-color-map
   "Create map containing updated values for one guess"
   [guess target]
   (reduce (fn [result [guess-char target-char]]
-            (if (= guess-char target-char)
-              (assoc result (keyword (str guess-char)) "GREEN")
-              result))
+            (assoc result (keyword (str guess-char))
+                   (cond
+                     (= guess-char target-char) (str "GREEN")
+                     (not (nil? (str/index-of (util/upper target) guess-char))) (str "YELLOW")
+                     :else (str "GRAY"))))
           {}
           (map vector (util/upper guess) (util/upper target))))
 
@@ -133,10 +134,7 @@
   "Play a game of wordle. A game consists out of 6 rounds."
   [path]
   (let [word-list (get-word-list-from-file path)
-        target (get-random-word word-list)
-        test {:a 1 :b 2}]
-    (println (get test :a))
-    (println (create-guess-color-map "hallo" "maple"))
+        target (get-random-word word-list)]
     (println target)
     (start-round target [] 0 false keyboard-key-colors)))
 
