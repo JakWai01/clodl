@@ -2,10 +2,10 @@
                          [clojure.string :as str]))
 
 ; Make sure that only words in the wordlist are accepted. This makes the game significantly harder. Do this as a flag
-; Don't print the char as yellow if the char is already green. Also, if there is a double-letter in your guess (only in the past guesses)
-; if it's actually contained once, just highlight it once.
 ; Write a macro that reads in a chunk of the wordlist at compiletime -> That requires the easy mode (just a chunk + any word can be guessed)
-; Make bold
+;exception
+;macro
+;monad
 
 (def keyboard-keys [[\Q \W \E \R \T \Y \U \I \O \P]
                     [\A \S \D \F \G \H \J \K \L]
@@ -19,6 +19,7 @@
   []
   ())
 
+; I don't like calling upper here all the time
 (defn colorize-string
   "Print the given string in the given color"
   [string & [color]]
@@ -26,15 +27,18 @@
     "GREEN" (str "\u001B[32m" (util/upper string) "\u001B[0m")
     "YELLOW" (str "\u001B[33m" (util/upper string) "\u001B[0m")
     "GRAY" (str "\u001B[90m" (util/upper string) "\u001B[0m")
+    "GREEN_BOLD" (str "\033[1;32m" (util/upper string) "\u001B[0m")
+    "YELLOW_BOLD" (str "\033[1;33m" (util/upper string) "\u001B[0m")
+    "GRAY_BOLD" (str "\033[1;37m" (util/upper string) "\u001B[0m")
     (str (util/upper string))))
 
 (defn get-letter-matches
   "Charwise comparison and colorization"
   [guess target]
   (map #(cond
-          (= %1 %2) (colorize-string %1 "GREEN")
-          (not (nil? (str/index-of target %1))) (colorize-string %1 "YELLOW")
-          :else (colorize-string %1 "GRAY")) guess target))
+          (= %1 %2) (colorize-string %1 "GREEN_BOLD")
+          (not (nil? (str/index-of target %1))) (colorize-string %1 "YELLOW_BOLD")
+          :else (colorize-string %1 "GRAY_BOLD")) guess target))
 
 (defn get-printed-len
   "Get printed length of a string also accounting for the spaces used"
@@ -63,9 +67,9 @@
   (reduce (fn [result [guess-char target-char]]
             (assoc result (keyword (str guess-char))
                    (cond
-                     (= guess-char target-char) (str "GREEN")
-                     (not (nil? (str/index-of (util/upper target) guess-char))) (str "YELLOW")
-                     :else (str "GRAY"))))
+                     (= guess-char target-char) (str "GREEN_BOLD")
+                     (not (nil? (str/index-of (util/upper target) guess-char))) (str "YELLOW_BOLD")
+                     :else (str "GRAY_BOLD"))))
           {}
           (map vector (util/upper guess) (util/upper target))))
 
@@ -97,12 +101,19 @@
   ; Try to use the get-print-len function instead of 11 here
   (dorun (map #(util/print-centered (format "%s [%d/6]" %1 %2) 11) past-guesses (iterate inc 1))))
 
+(defn clear-screen
+  "Clears screen and moves the cursor to the top left"
+  []
+  (print (str (char 27) "[2J")) ; clear screen
+  (print (str (char 27) "[;H"))) ; move cursor to the top left corner of the screen
+
 ; Pass keyboard dict as well
 (defn start-round
   "Take one guess and evaluate it's correctness"
   [target past-guesses round won colors]
   (if (and (< round 6) (not won))
     (do
+      (clear-screen)
       (when (not (= 0 (count past-guesses)))
         (print-past-guesses past-guesses))
       (println)
