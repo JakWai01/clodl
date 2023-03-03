@@ -15,7 +15,8 @@
   "Mark each char as either contained, contained and in the correct place or uncontained"
   [guess target]
   [(= guess target)
-   (reduce str (get-letter-matches guess target))])
+   (reduce str
+           (get-letter-matches guess target))])
 
 (defn get-word-list-from-file
   "Reads the wordlist from the file"
@@ -26,17 +27,20 @@
   "Prints all the past guesses in order to be able to be able to infer the target word"
   [past-guesses]
   (dorun
-   (map-indexed #(util/print-centered (format "%s [%d/6]" %2 %1) 11) past-guesses)))
+   (map-indexed
+    #(util/print-centered (format "%s [%d/6]" %2 (inc %1)) 11)
+    past-guesses)))
 
 (defn print-board-state
   "Print the current board state"
   [past-guesses colors]
   (util/clear-screen)
-  (when (not (= 0 (count past-guesses)))
+  (when
+   (not
+    (= 0 (count past-guesses)))
     (print-past-guesses past-guesses))
   (println)
-  ; Think about omitting this variable: keyboard/keyboard-keys
-  (keyboard/print-keyboard keyboard/keyboard-keys colors)
+  (keyboard/print-keyboard colors)
   (println))
 
 (defn start-round

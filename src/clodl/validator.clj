@@ -8,6 +8,6 @@
 (defn valid?
   "Check that the guess is made out of valid chars and is exactly five characters long"
   [guess word-list]
-  (and (and
+  (and
    (= (count guess) 5)
-   (every? #(Character/isLetter %) guess)) (in-wordlist? guess word-list)))
+   (every? #(Character/isLetter %) guess)) (in-wordlist? guess word-list))

@@ -14,7 +14,8 @@
 (defn repeat-str
   "Create a string that repeats s n times."
   [s n]
-  (apply str (repeat n s)))
+  (apply str
+         (repeat n s)))
 
 (defn spaces
   "Create a string of n spaces."

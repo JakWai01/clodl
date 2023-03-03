@@ -24,7 +24,7 @@
 
 (defn print-keyboard
   "Todo"
-  [keyboard-keys colors]
+  [colors]
   (doseq [key keyboard-keys]
     (as-> key x
       (map #(util/colorize-string % (get colors (keyword (str %)))) x)
@@ -34,4 +34,5 @@
 (defn update-keyboard-key-colors
   "Update the colors of the keyboard keys"
   [keyboard-key-colors guess target]
-  (merge keyboard-key-colors (create-guess-color-map guess target)))
+  (merge keyboard-key-colors
+         (create-guess-color-map guess target)))
