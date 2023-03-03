@@ -1,4 +1,5 @@
 (ns clodl.core (:require [clodl.util :as util]
+                         [clodl.model :as model]
                          [clojure.string :as str]))
 
 ; Make sure that only words in the wordlist are accepted. This makes the game significantly harder. Do this as a flag
@@ -7,17 +8,10 @@
 ;macro
 ;monad
 
-(def keyboard-keys [[\Q \W \E \R \T \Y \U \I \O \P]
-                    [\A \S \D \F \G \H \J \K \L]
-                    [\Z \X \C \V \B \N \M]])
-
-(def keyboard-key-colors {:A nil :B nil :C nil :D nil :E nil :F nil :G nil :H nil :I nil :J nil :K nil :L nil :M nil
-                          :N nil :O nil :P nil :Q nil :R nil :S nil :T nil :U nil :V nil :W nil :X nil :Y nil :Z nil})
-
 (defn in-wordlist?
   "Checks if the word is part of the wordlist"
-  []
-  ())
+  [guess word-list]
+  (boolean (some #{guess} word-list)))
 
 ; I don't like calling upper here all the time
 (defn colorize-string
@@ -85,10 +79,10 @@
 
 (defn valid?
   "Check that the guess is made out of valid chars and is exactly five characters long"
-  [guess]
-  (and
+  [guess word-list]
+  (and (and
    (= (count guess) 5)
-   (every? #(Character/isLetter %) guess)))
+   (every? #(Character/isLetter %) guess)) (in-wordlist? guess word-list)))
 
 (defn print-past-guesses
   "Prints all the past guesses in order to be able to be able to infer the target word"
@@ -110,31 +104,37 @@
 ; Pass keyboard dict as well
 (defn start-round
   "Take one guess and evaluate it's correctness"
-  [target past-guesses round won colors]
+  [target past-guesses round won colors word-list]
   (if (and (< round 6) (not won))
     (do
       (clear-screen)
       (when (not (= 0 (count past-guesses)))
         (print-past-guesses past-guesses))
       (println)
-      (print-keyboard keyboard-keys colors)
+      (print-keyboard model/keyboard-keys colors)
       (print "Please enter a word: ")
       (flush)
       (let [guess (util/lower (read-line))]
-        (if (valid? guess)
+        (if (valid? guess word-list)
           (let [[won colorized-guess] (evaluate-guess guess target)]
-            (start-round target (conj past-guesses colorized-guess) (inc round) won (update-keyboard-key-colors colors guess target)))
+            (start-round target (conj past-guesses colorized-guess) (inc round) won (update-keyboard-key-colors colors guess target) word-list))
           (do (println "Invalid word, please try again. The word should have consist out of 5 letters.")
-              (start-round target past-guesses round won colors)))))
+              (start-round target past-guesses round won colors word-list)))))
     (if (boolean won)
       (do
+        (clear-screen)
         (print-past-guesses past-guesses)
         (println)
-        (print-keyboard keyboard-keys keyboard-key-colors)
+        (print-keyboard model/keyboard-keys colors)
         (println)
         (util/print-centered "Congratulations! You guessed the word!"))
-      (do (println)
-          (util/print-centered (format "Game over! You were not able to guess the word '%s'", target))))))
+      (do
+        (clear-screen)
+        (print-past-guesses past-guesses)
+        (println)
+        (print-keyboard model/keyboard-keys colors)
+        (println)
+        (util/print-centered (format "Game over! You were not able to guess the word '%s'", target))))))
 
 (defn get-random-word
   "Get a random word from the wordlist"
@@ -144,10 +144,9 @@
 (defn start-game
   "Play a game of wordle. A game consists out of 6 rounds."
   [path]
-  (let [word-list (get-word-list-from-file path)
-        target (get-random-word word-list)]
-    (println target)
-    (start-round target [] 0 false keyboard-key-colors)))
+     (let [word-list (get-word-list-from-file path)
+           target (get-random-word word-list)]
+       (start-round target [] 0 false model/keyboard-key-colors word-list)))
 
 (defn -main
   "I don't do a whole lot."
