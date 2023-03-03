@@ -4,10 +4,10 @@ A Clojure library designed to ... well, that part is up to you.
 
 # Notes
 
-- [ ] Use thread-first or thread-last
-- [ ] Try using a macro of some sort (e.g. for reading in the wordlist at compile-time)
-- [ ] Store statistics in file and update/display them after the game is over
-- [ ] Think about implementing a worlde solver as well
+- [ ] Exception
+- [ ] Macro 
+- [ ] Monad
+- [ ] Tests
 - [ ] Add demo like already done in lurk
 
 ## Usage
