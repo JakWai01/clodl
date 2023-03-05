@@ -71,13 +71,13 @@
   [path]
   (let [word-list (get-word-list-from-file path)
         target (util/get-random-word word-list)]
-    (start-round target [] 0 false keyboard/keyboard-key-colors word-list)))
+    (start-round target [] 0 false keyboard-key-colors word-list)))
 
 (defn print-help
   "Todo"
   [accent-color]
   (println (util/colorize-string "Clodl - Wordle in the terminal\n" accent-color))
-  (println "It is required to provide the COLUMNS shell variable\nin order to provide a seamless UX.\n")
+  (println "It is required to provide the COLUMNS shell variable\nin order to provide a seamless user experience.\n")
   (println "COLUMNS=$COLUMNS clodl [COMMAND] ... [WORDLIST]\n")
   (println "Usage: \n")
   (println "\t" (util/colorize-string "play" accent-color) "\t Play a game of clodl")

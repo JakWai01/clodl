@@ -17,6 +17,9 @@
   `(try ~expr
         (catch Exception e# (~handler e#))))
 
+; Use this for valid?
+; Use this for in-wordlist
+
 (defn divide [a b]
   (try-monad (/ a b) (constantly nil)))
 
