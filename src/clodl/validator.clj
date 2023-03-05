@@ -11,3 +11,22 @@
   (and
    (= (count guess) 5)
    (every? #(Character/isLetter %) guess)) (in-wordlist? guess word-list))
+
+(defmacro try-monad
+  [expr handler]
+  `(try ~expr
+        (catch Exception e# (~handler e#))))
+
+(defn divide [a b]
+  (try-monad (/ a b) (constantly nil)))
+
+(defn divide-and-handle [a b]
+  (try-monad (/ a b)
+             (fn  [e]
+               (if  (instance? ArithmeticException e)
+                 "Cannot divide by zero."
+                 (str "An error occured: " e)))))
+
+;; (divide 10 0) ; Returns nil
+;; (divide-and-handle 10 0) ; Returns "Cannot divide by zero."
+;; (divide-and-handle 10 "foo") ; Returns "An error occurred: java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Number"

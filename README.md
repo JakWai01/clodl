@@ -4,7 +4,12 @@ A Clojure library designed to ... well, that part is up to you.
 
 # Notes
 
-- [ ] Exception
+- [ ] Instead of using keyboard-key-values in core, use nil at the beginning and initialize it to the variable in the function itself
+      -> We can make it private this way
+- [x] Colors
+- [x] Don't capitalize the strings in colorize-string
+- [x] Update the usage section
+- [x] Exception
 - [ ] Macro 
 - [ ] Monad
 - [ ] Tests

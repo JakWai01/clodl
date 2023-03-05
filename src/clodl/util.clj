@@ -48,15 +48,27 @@
 (defn colorize-string
   "Print the given string in the given color"
   [string & [color]]
-  (let [cap-str (string/upper-case string)]
     (case color
-      "GREEN" (str "\u001B[32m" cap-str "\u001B[0m")
-      "YELLOW" (str "\u001B[33m" cap-str "\u001B[0m")
-      "GRAY" (str "\u001B[90m" cap-str "\u001B[0m")
-      "GREEN_BOLD" (str "\033[1;32m" cap-str "\u001B[0m")
-      "YELLOW_BOLD" (str "\033[1;33m" cap-str "\u001B[0m")
-      "GRAY_BOLD" (str "\033[1;37m" cap-str "\u001B[0m")
-      (str cap-str))))
+      "GREEN" (str "\u001B[32m" string "\u001B[0m")
+      "YELLOW" (str "\u001B[33m" string "\u001B[0m")
+      "GRAY" (str "\u001B[90m" string "\u001B[0m")
+      "GREEN_BOLD" (str "\033[1;32m" string "\u001B[0m")
+      "YELLOW_BOLD" (str "\033[1;33m" string "\u001B[0m")
+      "GRAY_BOLD" (str "\033[1;37m" string "\u001B[0m")
+      (str string)))
+
+;; (defn colorize-string
+;;   "Print the given string in the given color"
+;;   [string & [color]]
+;;   (let [cap-str (string/upper-case string)]
+;;     (case color
+;;       "GREEN" (str "\u001B[32m" cap-str "\u001B[0m")
+;;       "YELLOW" (str "\u001B[33m" cap-str "\u001B[0m")
+;;       "GRAY" (str "\u001B[90m" cap-str "\u001B[0m")
+;;       "GREEN_BOLD" (str "\033[1;32m" cap-str "\u001B[0m")
+;;       "YELLOW_BOLD" (str "\033[1;33m" cap-str "\u001B[0m")
+;;       "GRAY_BOLD" (str "\033[1;37m" cap-str "\u001B[0m")
+;;       (str cap-str))))
 
 (defn clear-screen
   "Clears screen and moves the cursor to the top left"

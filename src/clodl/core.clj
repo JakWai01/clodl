@@ -6,10 +6,12 @@
 (defn get-letter-matches
   "Charwise comparison and colorization"
   [guess target]
-  (map #(cond
-          (= %1 %2) (util/colorize-string %1 "GREEN_BOLD")
-          (not (nil? (str/index-of target %1))) (util/colorize-string %1 "YELLOW_BOLD")
-          :else (util/colorize-string %1 "GRAY_BOLD")) guess target))
+  (let [cap-guess (str/upper-case guess)
+        cap-target (str/upper-case target)]
+    (map #(cond
+            (= %1 %2) (util/colorize-string %1 "GREEN_BOLD")
+            (not (nil? (str/index-of cap-target %1))) (util/colorize-string %1 "YELLOW_BOLD")
+            :else (util/colorize-string %1 "GRAY_BOLD")) cap-guess cap-target)))
 
 (defn evaluate-guess
   "Mark each char as either contained, contained and in the correct place or uncontained"
@@ -68,11 +70,24 @@
         target (util/get-random-word word-list)]
     (start-round target [] 0 false keyboard/keyboard-key-colors word-list)))
 
+(defn print-help
+  "Todo"
+  [accent-color]
+  (println (util/colorize-string "Clodl - Wordle in the terminal\n" accent-color))
+  (println "It is required to provide the COLUMNS shell variable\nin order to provide a seamless UX.\n")
+  (println "COLUMNS=$COLUMNS clodl [COMMAND] ... [WORDLIST]\n")
+  (println "Usage: \n")
+  (println "\t" (util/colorize-string "play" accent-color) "\t Play a game of clodl")
+  (println "\t" (util/colorize-string "help" accent-color) "\t Display this very page\n")
+  (println "Examples:\n")
+  (println "\tCOLUMNS=$COLUMNS clodl play words.txt")
+  (println "\tclodl help"))
+
 (defn -main
   "I don't do a whole lot."
   [& args]
   (case (first args)
     "play" (-> (last args)
                start-game)
-    "help" (println (util/colorize-string "Usage:\nplay wordlist\nhelp" "YELLOW"))
+    "help" (print-help "GREEN")
     (println (util/colorize-string "Invalid commands, use help to display information." "YELLOW"))))
