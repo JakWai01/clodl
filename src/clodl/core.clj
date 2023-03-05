@@ -3,6 +3,9 @@
                          [clodl.keyboard :as keyboard]
                          [clojure.string :as str]))
 
+(def ^:private ^:const keyboard-key-colors {:A nil :B nil :C nil :D nil :E nil :F nil :G nil :H nil :I nil :J nil :K nil :L nil :M nil
+                          :N nil :O nil :P nil :Q nil :R nil :S nil :T nil :U nil :V nil :W nil :X nil :Y nil :Z nil})
+
 (defn get-letter-matches
   "Charwise comparison and colorization"
   [guess target]

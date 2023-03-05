@@ -5,9 +5,6 @@
                     [\A \S \D \F \G \H \J \K \L]
                     [\Z \X \C \V \B \N \M]])
 
-(def ^:const keyboard-key-colors {:A nil :B nil :C nil :D nil :E nil :F nil :G nil :H nil :I nil :J nil :K nil :L nil :M nil
-                          :N nil :O nil :P nil :Q nil :R nil :S nil :T nil :U nil :V nil :W nil :X nil :Y nil :Z nil})
-
 (defn create-guess-color-map
   "Create map containing updated values for one guess"
   [guess target]
@@ -33,6 +30,6 @@
 
 (defn update-keyboard-key-colors
   "Update the colors of the keyboard keys"
-  [keyboard-key-colors guess target]
-  (merge keyboard-key-colors
+  [colors guess target]
+  (merge colors
          (create-guess-color-map guess target)))
