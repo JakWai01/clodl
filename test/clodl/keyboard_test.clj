@@ -1,5 +1,5 @@
 (ns clodl.keyboard-test (:require [clojure.test :refer :all]
-                                 [clodl.keyboard :as keyboard]))
+                                  [clodl.keyboard :as keyboard]))
 
 (deftest create-guess-color-map-test
   (testing "Test create-guess-color-map-test with valid args"

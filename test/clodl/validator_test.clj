@@ -1,5 +1,5 @@
 (ns clodl.validator-test (:require [clojure.test :refer :all]
-[clodl.validator :as validator]))
+                                   [clodl.validator :as validator]))
 
 (deftest in-wordlist-test?
   (testing "Test in-wordlist? with valid args"

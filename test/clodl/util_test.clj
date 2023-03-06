@@ -1,5 +1,5 @@
 (ns clodl.util-test (:require [clojure.test :refer :all]
-                     [clodl.util :as util]))
+                              [clodl.util :as util]))
 
 (deftest repeat-str-test
   (testing "Testing repeat-str with valid args"

@@ -4,19 +4,7 @@ A Clojure library designed to ... well, that part is up to you.
 
 # Notes
 
-- [x] Instead of using keyboard-key-values in core, use nil at the beginning and initialize it to the variable in the function itself
-      -> We can make it private this way
-- [x] Colors
-- [x] Don't capitalize the strings in colorize-string
-- [x] Update the usage section
-- [x] Exception
-- [x] Macro 
-- [x] Monad
-- [x] Tests
-- [ ] Use private as much as possible
-- [ ] Function names and comments
-- [ ] Properly format clojure code
-- [ ] Add demo like already done in lurk
+- [ ] Update README and add demo like already done in lurk
 
 ## Usage
 

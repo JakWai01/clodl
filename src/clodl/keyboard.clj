@@ -2,11 +2,12 @@
                              [clojure.string :as str]))
 
 (def ^:private ^:const keyboard-keys [[\Q \W \E \R \T \Y \U \I \O \P]
-                    [\A \S \D \F \G \H \J \K \L]
-                    [\Z \X \C \V \B \N \M]])
+                                      [\A \S \D \F \G \H \J \K \L]
+                                      [\Z \X \C \V \B \N \M]])
 
 (defn create-guess-color-map
-  "Create map containing updated values for one guess"
+  "Creates a hashmap that contains the guessed letters as keys
+   and the corresponding colors as values"
   [guess target]
   (let [guess (str/upper-case guess)
         target (str/upper-case target)]
@@ -20,7 +21,8 @@
             (map vector guess target))))
 
 (defn print-keyboard
-  "Todo"
+  "Prints a keyboard into the terminal in order to visualize what letters
+   have been used and if they are present in the target"
   [colors]
   (doseq [key keyboard-keys]
     (as-> key x
@@ -29,7 +31,8 @@
       (util/print-centered x (util/get-printed-len key)))))
 
 (defn update-keyboard-key-colors
-  "Update the colors of the keyboard keys"
+  "Merge the hashmap of the current guess with the current
+   keyboard-key-color map in order to preserve previous state"
   [colors guess target]
   (merge colors
          (create-guess-color-map guess target)))
