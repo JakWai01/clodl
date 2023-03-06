@@ -1,28 +1,51 @@
 # clodl
 
-A Clojure library designed to ... well, that part is up to you.
-
-# Notes
-
-- [ ] Update README and add demo like already done in lurk
+Play wordle in the terminal with clodl.
 
 ## Usage
 
+### Using the binary
 ```
-COLUMNS=$COLUMNS lein run play words.txt
+Clodl - Wordle in the terminal
+
+It is required to provide the COLUMNS shell variable
+in order to provide a seamless user experience.
+
+COLUMNS=$COLUMNS clodl [COMMAND] ... [WORDLIST]
+
+Usage: 
+
+         play    Play a game of clodl
+         help    Display this very page
+
+Examples:
+
+        COLUMNS=$COLUMNS clodl play words.txt
+        clodl help
+```
+
+### Using leiningen
+```
+Clodl - Wordle in the terminal
+
+It is required to provide the COLUMNS shell variable
+in order to provide a seamless user experience.
+
+COLUMNS=$COLUMNS lein run [COMMAND] ... [WORDLIST]
+
+Usage: 
+
+         play    Play a game of clodl
+         help    Display this very page
+
+Examples:
+
+        COLUMNS=$COLUMNS lein run play words.txt
+        lein run help
 ```
 
 ## License
 
-Copyright © 2023 FIXME
+clodl (c) 2023 Jakob Waibel and contributors
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+SPDX-License-Identifier: AGPL-3.0
