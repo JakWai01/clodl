@@ -5,6 +5,7 @@
   [guess word-list]
   (boolean (some #{guess} word-list)))
 
+; You can leave out everything except 'in-wordlist'
 (defn valid?
   "Check that the guess is made out of valid chars and is exactly five characters long"
   [guess word-list]

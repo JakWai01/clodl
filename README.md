@@ -12,9 +12,10 @@ A Clojure library designed to ... well, that part is up to you.
 - [x] Exception
 - [ ] Macro 
 - [ ] Monad
-- [ ] Tests
+- [x] Tests
 - [ ] Use private as much as possible
 - [ ] Function names and comments
+- [ ] Properly format clojure code
 - [ ] Add demo like already done in lurk
 
 ## Usage
