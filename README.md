@@ -44,8 +44,13 @@ Examples:
         lein run help
 ```
 
+### Executing the jar
+```
+COLUMNS=$COLUMNS java -jar target/clodl-0.1.0-SNAPSHOT-standalone.jar play words.txt
+```
+
 ## License
 
 clodl (c) 2023 Jakob Waibel and contributors
 
-SPDX-License-Identifier: AGPL-3.0
+Eclipse Public License - v 2.0
