@@ -1,5 +1,4 @@
-(ns clodl.util (:require [clojure.string :as string]
-                         [clodl.util :as util]))
+(ns clodl.util (:require [clodl.util :as util]))
 
 (defn get-term-columns
   "Get the width of the terminal by reading the `COLUMNS` environment variable."
@@ -29,7 +28,7 @@
               (get-term-columns)
               (catch Exception e
                 (println (str "Error: " (.toString e)))
-                ; Terminate program since the output can't be game can't be displayed properly
+                ; Terminate program since the output can't be displayed properly
                 (System/exit 1)))
         slen (if (not (nil? custom-len))
                (int custom-len)
@@ -56,19 +55,6 @@
       "YELLOW_BOLD" (str "\033[1;33m" string "\u001B[0m")
       "GRAY_BOLD" (str "\033[1;37m" string "\u001B[0m")
       (str string)))
-
-;; (defn colorize-string
-;;   "Print the given string in the given color"
-;;   [string & [color]]
-;;   (let [cap-str (string/upper-case string)]
-;;     (case color
-;;       "GREEN" (str "\u001B[32m" cap-str "\u001B[0m")
-;;       "YELLOW" (str "\u001B[33m" cap-str "\u001B[0m")
-;;       "GRAY" (str "\u001B[90m" cap-str "\u001B[0m")
-;;       "GREEN_BOLD" (str "\033[1;32m" cap-str "\u001B[0m")
-;;       "YELLOW_BOLD" (str "\033[1;33m" cap-str "\u001B[0m")
-;;       "GRAY_BOLD" (str "\033[1;37m" cap-str "\u001B[0m")
-;;       (str cap-str))))
 
 (defn clear-screen
   "Clears screen and moves the cursor to the top left"

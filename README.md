@@ -10,8 +10,8 @@ A Clojure library designed to ... well, that part is up to you.
 - [x] Don't capitalize the strings in colorize-string
 - [x] Update the usage section
 - [x] Exception
-- [ ] Macro 
-- [ ] Monad
+- [x] Macro 
+- [x] Monad
 - [x] Tests
 - [ ] Use private as much as possible
 - [ ] Function names and comments

@@ -57,14 +57,19 @@
       (print "Please enter a word: ")
       (flush)
       (let [guess (str/lower-case (read-line))]
-        (if (validator/valid? guess word-list)
-          (let [[won colorized-guess] (evaluate-guess guess target)]
-            (recur target (conj past-guesses colorized-guess) (inc round) won (keyboard/update-keyboard-key-colors colors guess target) word-list))
-          (do (println "Invalid word, please try again. The word should have consist out of 5 letters.")
-              (recur target past-guesses round won colors word-list)))))
+        (try
+          (validator/bind (validator/valid? guess word-list)
+            (fn [result]
+              (let [[won colorized-guess] (evaluate-guess result target)]
+                (start-round target (conj past-guesses colorized-guess) (inc round) won (keyboard/update-keyboard-key-colors colors guess target) word-list))))
+          (catch Exception _
+            (println "Invalid word, please try again. The word should consist out of exactly 5 letters.")
+            (start-round target past-guesses round won colors word-list))))
+    )
     (if (boolean won)
       (util/print-centered "Congratulations! You guessed the word!\n")
-      (util/print-centered (format "Game over! You were not able to guess the word '%s'\n", target)))))
+      (do (util/print-centered (format "Game over! You were not able to guess the word '%s'\n", target))
+          (util/print-centered "Better luck next time!")))))
 
 (defn start-game
   "Play a game of wordle. A game consists out of 6 rounds."
