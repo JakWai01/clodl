@@ -4,11 +4,7 @@
 (deftest repeat-str-test
   (testing "Testing repeat-str with valid args"
     (is (= "testtest" (util/repeat-str "test" 2)))
-    (is (= "strstrstrstr" (util/repeat-str "str" 4))))
-  (testing "Testing repeat-str with invalid args"))
-    ;; (is (= "FIXME" (util/repeat-str 1 "test")))
-    ;; (is (= "FIXME" (util/repeat-str 1 1)))
-    ;; (is (= "FIXME" (util/repeat-str "test" "test")))))
+    (is (= "strstrstrstr" (util/repeat-str "str" 4)))))
 
 (deftest spaces-test
   (testing "Testing spaces with valid args"

@@ -8,5 +8,5 @@
 
 (deftest valid?-test
   (testing "Test valid with valid arguments"
-    (is (true? (validator/valid? "mouse" ["hello" "table" "mouse"])))
-    (is (false? (validator/valid? "elf" ["hello" "table" "mouse"])))))
+    (is (= "mouse" (validator/valid? "mouse" ["hello" "table" "mouse"])))
+    (is (thrown-with-msg? Exception #"Invalid word." (validator/valid? "elf" ["hello" "table" "mouse"])))))
